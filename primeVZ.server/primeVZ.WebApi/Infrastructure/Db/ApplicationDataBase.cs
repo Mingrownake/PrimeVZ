@@ -1,0 +1,16 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+using primeVZ.WebApi.Domain.Model;
+using primeVZ.WebApi.Infrastructure.ConfigurationEntity;
+
+namespace primeVZ.WebApi.Infrastructure.Db;
+
+public class ApplicationDataBase(DbContextOptions<ApplicationDataBase> option) : DbContext(option)
+{
+    public DbSet<User> Users {get; set;}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
+    }
+}
