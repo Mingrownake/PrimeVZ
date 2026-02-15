@@ -1,0 +1,17 @@
+<h1>{{title}}</h1>
+
+<div *ngFor="let user of employee$ | async; let i = index">
+    <app-employee-card
+        [firstName]="user.firstName"
+        [lastName]="user.lastName"
+        (remove)="remove(i)"
+    ></app-employee-card>
+</div>
+
+<p *ngIf="(employee$ | async)?.length === 0">Список сотрудников пуст</p>
+
+<div>
+    <input [(ngModel)]="firstName" type="text" placeholder="Имя">
+    <input [(ngModel)]="lastName" type="text" placeholder="Фамилия">
+</div>
+<button (click)="onAdd()">Добавить нового сотрудника</button>
