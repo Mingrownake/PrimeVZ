@@ -1,17 +1,37 @@
 <h1>{{title}}</h1>
 
-<div *ngFor="let user of employee$ | async; let i = index">
-    <app-employee-card
-        [firstName]="user.firstName"
-        [lastName]="user.lastName"
-        (remove)="remove(i)"
-    ></app-employee-card>
-</div>
+<p *ngIf="loading$ | async">Загрузка сотрудников...</p>
 
-<p *ngIf="(employee$ | async)?.length === 0">Список сотрудников пуст</p>
+<p *ngIf="(error$ | async) as err" class="error">{{err}}</p>
 
-<div>
-    <input [(ngModel)]="firstName" type="text" placeholder="Имя">
-    <input [(ngModel)]="lastName" type="text" placeholder="Фамилия">
-</div>
-<button (click)="onAdd()">Добавить нового сотрудника</button>
+<ng-container *ngIf="(employee$ | async) as employees">
+    <div *ngFor="let employee of employees; let i = index">
+        <app-employee-card
+            [firstName]="employee.firstName"
+            [lastName]="employee.lastName"
+            (remove)="remove(i)"
+        ></app-employee-card>
+    </div>
+
+    <p *ngIf="employees.length === 0">Список сотрудников пуст</p>
+</ng-container>
+
+<form class="form" [formGroup]="form" (ngSubmit)="addEmployee()">
+    <input formControlName="firstName" type="text" placeholder="Имя">
+        <div *ngIf="form.controls.firstName.touched && form.controls.firstName.invalid">
+            <small class="error" *ngIf="form.controls.firstName.errors?.['required']">Поле обязательно</small>
+            <small class="error" *ngIf="form.controls.firstName.errors?.['minlength']">Минимальное значение 3</small>
+        </div>
+    <input formControlName="lastName" type="text" placeholder="Фамилия">
+        <div *ngIf="form.controls.lastName.touched && form.controls.lastName.invalid">
+            <small class="error" *ngIf="form.controls.lastName.errors?.['required']">Поле обязательно</small>
+        </div>
+    <button [disabled]="form.invalid" type="submit">Добавить нового сотрудника</button>
+</form>
+
+<ng-container *ngIf="toastState">
+    <div>Добавлен новый сотрудник!</div>
+</ng-container>
+
+
+<button (click)="addTestEmployee()">Добавить тестового пользователя</button>

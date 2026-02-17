@@ -7,10 +7,10 @@ namespace primeVZ.WebApi.Infrastructure.Db;
 
 public class ApplicationDataBase(DbContextOptions<ApplicationDataBase> option) : DbContext(option)
 {
-    public DbSet<User> Users {get; set;}
+    public DbSet<Employee> Employees {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
+        new EmployeeEntityTypeConfiguration().Configure(modelBuilder.Entity<Employee>());
     }
 }

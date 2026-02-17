@@ -2,9 +2,9 @@ using System;
 
 namespace primeVZ.WebApi.Domain.Model;
 
-public class User
+public class Employee
 {
     public Guid Id {get; init;}
     public required string FirstName {get; set;}
-    public required string SecondName {get; set;}
+    public required string LastName {get; set;}
 }

@@ -5,9 +5,9 @@ using primeVZ.WebApi.Domain.Model;
 
 namespace primeVZ.WebApi.Infrastructure.ConfigurationEntity;
 
-public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+public class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Employee> builder)
     {
         builder
             .HasKey(x => x.Id);
@@ -15,7 +15,7 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .Property(x => x.FirstName)
             .IsRequired();
         builder
-            .Property(x => x.SecondName)
+            .Property(x => x.LastName)
             .IsRequired();
     }
 }

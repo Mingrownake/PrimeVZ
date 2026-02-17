@@ -1,0 +1,11 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 24rem;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.error {
+    color: red;
+}
