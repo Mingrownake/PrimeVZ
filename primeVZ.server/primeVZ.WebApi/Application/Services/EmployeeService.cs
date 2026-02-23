@@ -14,9 +14,9 @@ public class EmployeeService(IEmployeeRepository employeeRepository)
         return employeeEntity?.MapToResponse();
     }
 
-    public async Task<IEnumerable<EmployeeResponseDto>> GetAllEmployee()
+    public async Task<IEnumerable<EmployeeResponseDto>> GetAllEmployee(string? term)
     {
-        var employee = await employeeRepository.GetAllEmployee();
+        var employee = await employeeRepository.GetAllEmployee(term);
         return employee.MapToResponse();        
     }
 

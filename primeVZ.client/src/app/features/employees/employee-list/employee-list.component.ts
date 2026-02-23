@@ -1,15 +1,15 @@
+import { EmployeeStoreService } from './../employee-store.service';
 import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from '../employee.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Employee } from '../employee';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrl: './employee-list.component.scss'
+  styleUrl: './employee-list.component.css'
 })
 export class EmployeeListComponent implements OnInit {
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private store: EmployeeStoreService) {}
 
   form = new FormGroup({
     firstName: new FormControl("", [
@@ -22,50 +22,37 @@ export class EmployeeListComponent implements OnInit {
     ])
   });
 
+  searchControll = new FormControl("");
+
   title: string = "Список сотрудников";
 
-  employee$ = this.employeeService.employee$;
-  loading$ = this.employeeService.loading$;
-  error$ = this.employeeService.error$;
-  toastState: boolean = false;
+  employee$ = this.store.employee$;
+  loading$ = this.store.loading$;
+  error$ = this.store.error$;
 
   ngOnInit(): void {
-    this.employeeService.loadingEmployee();
+    this.store.setSearch("");
+    this.searchControll.valueChanges.subscribe(v => {
+      this.store.setSearch(v ?? "")
+    })
   }
 
   addEmployee() {
     const formData = this.form.value;
     if (!formData.firstName || !formData.lastName) return;
-
-    this.employeeService.addEmployee({
+    const emp: Omit<Employee, "id"> = {
       firstName: formData.firstName,
       lastName: formData.lastName
-    }).subscribe(() => {
-      this.employeeService.loadingEmployee();
-      this.form.reset();
-      this.toastEffect();
-    })
+    }
+    this.store.createEmployee(emp)
+    this.form.reset()
   }
 
-  addTestEmployee() {
-    console.log("Clicked");
-    this.employeeService.addEmployee({
-      firstName: "Test",
-      lastName: "User"
-    }).subscribe(() => {
-      this.employeeService.loadingEmployee();
-      this.toastEffect();
-    })
+  refresh() {
+    this.store.reload();
   }
 
-  toastEffect() {
-    this.toastState = true;
-    setTimeout(() => {
-      this.toastState = false;
-    }, 2000);
-  }
-
-  remove(index: number) {
-    this.employeeService.remove(index);
+  remove(employeeId: string) {
+    this.store.removeEmployee(employeeId)
   }
 }

@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-employee-card',
   templateUrl: './employee-card.component.html',
-  styleUrl: './employee-card.component.scss'
+  styleUrl: './employee-card.component.css'
 })
 export class EmployeeCardComponent {
   @Input() firstName!: string;

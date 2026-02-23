@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using primeVZ.WebApi.Domain.Interfaces;
 using primeVZ.WebApi.Domain.Model;
 using primeVZ.WebApi.Infrastructure.Db;
@@ -25,9 +26,14 @@ public class EmployeeRepository(ApplicationDataBase context) : IEmployeeReposito
         return await context.Employees.FindAsync(id);
     }
 
-    public async Task<IEnumerable<Employee>> GetAllEmployee()
+    public async Task<IEnumerable<Employee>> GetAllEmployee(string? term)
     {
-        return context.Employees;
+        var employeeQuery = context.Employees.AsQueryable();
+        if (!string.IsNullOrEmpty(term) && !string.IsNullOrWhiteSpace(term))
+        {
+            employeeQuery = employeeQuery.Where(x => x.FirstName.Contains(term) || x.LastName.Contains(term));
+        }
+        return employeeQuery.AsEnumerable();
     }
 
     public async Task AddEmployee(Employee employee)

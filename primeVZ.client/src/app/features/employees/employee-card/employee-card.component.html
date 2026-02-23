@@ -1,5 +1,12 @@
-<div class="card">
-    <p>{{firstName}}</p>
-    <p>{{lastName}}</p>
-    <button (click)="onRemove()">Удалить</button>
+<div class="bg-white rounded-xl border border-slate-200 p-4 h-[140px] shadow-sm hover:shadow-md transition-shadow flex flex-col">
+    <div>
+        <p class="text-xl">Сотрудник</p>
+    </div>
+    <div class="flex-1">
+        <p>{{firstName}}</p>
+        <p>{{lastName}}</p>
+    </div>
+    <div class="flex justify-end">
+        <button class="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors" (click)="onRemove()">Удалить</button>
+    </div>
 </div>

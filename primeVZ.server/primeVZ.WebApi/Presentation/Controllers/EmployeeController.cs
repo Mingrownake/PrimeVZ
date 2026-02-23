@@ -10,17 +10,17 @@ namespace primeVZ.WebApi.Presentation.Controllers
     public class EmployeesController(EmployeeService employeeService): ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<EmployeeResponseDto>> GetAll()
+        public async Task<ActionResult<EmployeeResponseDto>> GetAll([FromQuery] string? term = "")
         {
-            var users = await employeeService.GetAllEmployee();
-            if (!users.Any())
+            var employees = await employeeService.GetAllEmployee(term);
+            if (!employees.Any())
             {
                 return NotFound();
             }
-            return Ok(users);
+            return Ok(employees);
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<EmployeeResponseDto>> GetEmployee(Guid id)
         {
             var employee = await employeeService.GetEmployee(id);
@@ -41,7 +41,12 @@ namespace primeVZ.WebApi.Presentation.Controllers
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
-            await employeeService.DeleteEmployee(id);
+            var employee = await employeeService.GetEmployee(id);
+            if (employee is null)
+            {
+                return NotFound();
+            }
+            await employeeService.DeleteEmployee(employee.Id);
             return NoContent();
         }
 
