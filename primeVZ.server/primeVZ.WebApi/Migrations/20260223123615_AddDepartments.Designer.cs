@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using primeVZ.WebApi.Infrastructure.Db;
@@ -11,9 +12,11 @@ using primeVZ.WebApi.Infrastructure.Db;
 namespace primeVZ.WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDataBase))]
-    partial class ApplicationDataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260223123615_AddDepartments")]
+    partial class AddDepartments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +58,6 @@ namespace primeVZ.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -68,25 +68,7 @@ namespace primeVZ.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("primeVZ.WebApi.Domain.Model.Employee", b =>
-                {
-                    b.HasOne("primeVZ.WebApi.Domain.Model.Department", "Department")
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("primeVZ.WebApi.Domain.Model.Department", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

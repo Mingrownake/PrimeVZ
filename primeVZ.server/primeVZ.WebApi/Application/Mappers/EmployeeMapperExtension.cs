@@ -17,14 +17,14 @@ public static class EmployeeMapperExtension
 
     public static IEnumerable<EmployeeResponseDto> MapToResponse(this IEnumerable<Employee> employees)
     {
-        return employees.Select((x =>
+        return employees.Select(x =>
         {
             return new EmployeeResponseDto(
                 Id: x.Id,
                 FirstName: x.FirstName,
                 LastName: x.LastName
             );
-        }));
+        });
     }
 
     public static Employee MapToEntity(this EmployeeCreateDto employee)

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using primeVZ.WebApi.Application.Services;
 using primeVZ.WebApi.Domain.Interfaces;
 using primeVZ.WebApi.Infrastructure.Db;
+using primeVZ.WebApi.Infrastructure.Repository.Departments;
 using primeVZ.WebApi.Infrastructure.Repository.User;
 using Scalar.AspNetCore;
 
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<ApplicationDataBase>(option =>
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
 
